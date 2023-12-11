@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Trigger on pushes to the main branch
+  repository_dispatch:
+    types: [build]  # Trigger on manual workflow dispatches
 
 env:
   IMAGE: cpiconc991/rust-project
