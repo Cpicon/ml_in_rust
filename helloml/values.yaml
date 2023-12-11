@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  repository: cpiconc991/rust-project
+  pullPolicy: Always
+  # Overrides the image tag as latest is not recommend for production. Use environment specfic values.yaml.
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,8 +40,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  type: NodePort
+  port: 9090
 
 ingress:
   enabled: false
