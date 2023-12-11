@@ -1,0 +1,34 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+
+env:
+  IMAGE: cpiconc991/rust-project
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${IMAGE}:${{ github.sha }}  # Tag the image with the commit SHA
+
+    - name: Inspect
+      run: |
+         docker image inspect ${IMAGE}:${{ github.sha }}  
